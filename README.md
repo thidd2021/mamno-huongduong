@@ -107,14 +107,12 @@ Blazor Server.
    Ứng dụng tự tạo 5 Role và tài khoản `hieutruong` nếu chưa có. Không
    lưu mật khẩu thật trong `appsettings.json` hoặc commit lên Git.
 
-## Deploy trên Render với SQLite lưu bền vững
+## Deploy demo miễn phí trên Render
 
 Repo có `Dockerfile` và `render.yaml` để Render build ứng dụng .NET 8 cùng
-Python/openpyxl. Blueprint dùng gói Starter và ổ đĩa bền vững 1 GB tại
-`/var/data`; gói này có tính phí:
+Python/openpyxl. Blueprint dùng gói Free và lưu SQLite trong container:
 
 1. Tạo Web Service trên Render, kết nối repo và chọn Blueprint (`render.yaml`).
-   Xác nhận gói Starter và ổ đĩa 1 GB nếu Render yêu cầu xác nhận thay đổi.
 2. Cấu hình `Admin__InitialPassword` và `Database__ImportToken` bằng secret
    riêng trong Environment của Render; không lưu các giá trị này trong Git.
    `Admin__ResetExistingPassword` mặc định `false` để không ghi đè mật khẩu
@@ -124,14 +122,16 @@ Python/openpyxl. Blueprint dùng gói Starter và ổ đĩa bền vững 1 GB t�
    token và chọn file `.db`. Endpoint kiểm tra tính toàn vẹn/schema và từ chối
    snapshot sai cấu trúc; các tài khoản trong `AspNetUsers` được giữ nguyên.
    Chỉ tải DB qua HTTPS bằng transfer token bí mật, không commit DB lên GitHub.
-   Sau thông báo xác nhận, khởi động lại dịch vụ để cài snapshot lên ổ đĩa
-   bền vững.
+   Sau thông báo xác nhận, khởi động lại dịch vụ để cài snapshot.
 4. Render cấp địa chỉ dạng `*.onrender.com`; domain riêng chỉ dùng được nếu
    bạn đã sở hữu domain đó.
 
-Ổ đĩa bền vững giữ SQLite qua các lần deploy/khởi động lại, nhưng không thay
-thế cho sao lưu định kỳ. Nếu chuyển dịch vụ về gói Free hoặc bỏ ổ đĩa, dữ liệu
-trên ổ có thể không còn được ứng dụng sử dụng.
+Gói Free có giới hạn giờ sử dụng hàng tháng và dịch vụ có thể ngủ khi không có
+truy cập, nên lần truy cập đầu sau khi ngủ sẽ khởi động chậm. Gói này không có
+ổ đĩa bền vững: SQLite được ghi trong filesystem tạm của container. Dữ liệu
+thay đổi hoặc snapshot nạp vào có thể mất khi dịch vụ khởi động lại hoặc deploy
+lại; khi đó ứng dụng trở về DB mẫu đi kèm bản build. Đây chỉ phù hợp demo ngắn
+hạn, không dùng làm dữ liệu vận hành hay bản sao lưu.
 
 **Nền tảng .NET:** dự án hiện dùng .NET 8, đã hết thời hạn hỗ trợ từ
 10/11/2026. Chỉ nên dùng cấu hình này cho demo ngắn hạn; cần nâng lên phiên

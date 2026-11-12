@@ -2,19 +2,15 @@ services:
   - type: web
     name: mamnon-thucdon-daodinh-demo
     runtime: docker
-    plan: starter
+    plan: free
     healthCheckPath: /dang-nhap
-    disk:
-      name: mamnon-thucdon-data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
       - key: ASPNETCORE_URLS
         value: http://+:10000
       - key: Database__Path
-        value: /var/data/kho_thuc_pham_mam_non.db
+        value: /app/kho_thuc_pham_mam_non.db
       - key: Database__ImportToken
         sync: false
       - key: Admin__InitialPassword
