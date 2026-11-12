@@ -115,8 +115,9 @@ Python/openpyxl. Blueprint dùng gói Free và lưu SQLite trong container:
 1. Tạo Web Service trên Render, kết nối repo và chọn Blueprint (`render.yaml`).
 2. Cấu hình `Admin__InitialPassword` và `Database__ImportToken` bằng secret
    riêng trong Environment của Render; không lưu các giá trị này trong Git.
-   `Admin__ResetExistingPassword` mặc định `false` để không ghi đè mật khẩu
-   đã đổi khi dịch vụ khởi động lại.
+   Blueprint đặt `Admin__ResetExistingPassword=true` để mật khẩu Hiệu trưởng
+   theo secret luôn dùng được, kể cả khi DB mẫu đã có tài khoản. Vì vậy mật
+   khẩu này sẽ được đặt lại mỗi lần dịch vụ khởi động.
 3. Nếu cần nạp snapshot SQLite, mở
    `https://<ten-dich-vu>.onrender.com/_ops/database/import`, nhập transfer
    token và chọn file `.db`. Endpoint kiểm tra tính toàn vẹn/schema và từ chối

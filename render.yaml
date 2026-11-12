@@ -16,4 +16,4 @@ services:
       - key: Admin__InitialPassword
         sync: false
       - key: Admin__ResetExistingPassword
-        value: "false"
+        value: "true"
