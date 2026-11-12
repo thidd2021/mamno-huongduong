@@ -122,8 +122,10 @@ Python/openpyxl. Blueprint dùng gói Starter và ổ đĩa bền vững 1 GB t�
 3. Nếu cần nạp snapshot SQLite, mở
    `https://<ten-dich-vu>.onrender.com/_ops/database/import`, nhập transfer
    token và chọn file `.db`. Endpoint kiểm tra tính toàn vẹn/schema và từ chối
-   snapshot có tài khoản trong `AspNetUsers`. Sau thông báo xác nhận, khởi động
-   lại dịch vụ để cài snapshot lên ổ đĩa bền vững.
+   snapshot sai cấu trúc; các tài khoản trong `AspNetUsers` được giữ nguyên.
+   Chỉ tải DB qua HTTPS bằng transfer token bí mật, không commit DB lên GitHub.
+   Sau thông báo xác nhận, khởi động lại dịch vụ để cài snapshot lên ổ đĩa
+   bền vững.
 4. Render cấp địa chỉ dạng `*.onrender.com`; domain riêng chỉ dùng được nếu
    bạn đã sở hữu domain đó.
 

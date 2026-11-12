@@ -222,10 +222,6 @@ app.MapPost("/_ops/database/import", async (HttpRequest request) =>
             if (Convert.ToInt32(await schema.ExecuteScalarAsync(request.HttpContext.RequestAborted)) != 4)
                 return Results.BadRequest("The uploaded SQLite database does not match the application schema.");
 
-            await using var users = uploadedDb.CreateCommand();
-            users.CommandText = "SELECT COUNT(*) FROM AspNetUsers";
-            if (Convert.ToInt32(await users.ExecuteScalarAsync(request.HttpContext.RequestAborted)) != 0)
-                return Results.BadRequest("User accounts must not be included in the uploaded database.");
         }
 
         SqliteConnection.ClearAllPools();
