@@ -127,12 +127,13 @@ Python/openpyxl. Blueprint dùng gói Free và lưu SQLite trong container:
 4. Render cấp địa chỉ dạng `*.onrender.com`; domain riêng chỉ dùng được nếu
    bạn đã sở hữu domain đó.
 
-Gói Free có giới hạn giờ sử dụng hàng tháng và dịch vụ có thể ngủ khi không có
-truy cập, nên lần truy cập đầu sau khi ngủ sẽ khởi động chậm. Gói này không có
-ổ đĩa bền vững: SQLite được ghi trong filesystem tạm của container. Dữ liệu
-thay đổi hoặc snapshot nạp vào có thể mất khi dịch vụ khởi động lại hoặc deploy
-lại; khi đó ứng dụng trở về DB mẫu đi kèm bản build. Đây chỉ phù hợp demo ngắn
-hạn, không dùng làm dữ liệu vận hành hay bản sao lưu.
+Render cấp 750 giờ chạy Free cho mỗi workspace trong mỗi tháng dương lịch; các
+dịch vụ Free khác dùng chung giới hạn này. Dịch vụ sẽ ngủ sau 15 phút không có
+truy cập; lần truy cập tiếp theo có thể mất khoảng một phút để khởi động. Gói
+này không có ổ đĩa bền vững: SQLite được ghi trong filesystem tạm của container.
+Dữ liệu thay đổi hoặc snapshot nạp vào có thể mất khi dịch vụ ngủ, khởi động lại
+hoặc deploy lại; khi đó ứng dụng trở về DB mẫu đi kèm bản build. Đây chỉ phù hợp
+demo ngắn hạn, không dùng làm dữ liệu vận hành hay bản sao lưu.
 
 **Nền tảng .NET:** dự án hiện dùng .NET 8, đã hết thời hạn hỗ trợ từ
 10/11/2026. Chỉ nên dùng cấu hình này cho demo ngắn hạn; cần nâng lên phiên
