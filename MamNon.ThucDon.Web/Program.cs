@@ -17,8 +17,14 @@ var configuredConnectionString = builder.Configuration.GetConnectionString("Defa
 
 // Luôn neo đường dẫn SQLite vào thư mục ứng dụng, tránh đọc nhầm DB theo thư mục chạy hiện tại.
 var dbFileName = "kho_thuc_pham_mam_non.db";
-var dbPath = Path.Combine(builder.Environment.ContentRootPath, dbFileName);
-var connectionString = $"Data Source={dbPath}";
+var configuredDatabasePath = builder.Configuration["Database:Path"];
+var dbPath = string.IsNullOrWhiteSpace(configuredDatabasePath)
+    ? Path.Combine(builder.Environment.ContentRootPath, dbFileName)
+    : Path.GetFullPath(configuredDatabasePath);
+var dbDirectory = Path.GetDirectoryName(dbPath);
+if (!string.IsNullOrWhiteSpace(dbDirectory))
+    Directory.CreateDirectory(dbDirectory);
+var connectionString = new SqliteConnectionStringBuilder { DataSource = dbPath }.ToString();
 
 var pendingDatabasePath = dbPath + ".pending";
 if (File.Exists(pendingDatabasePath))

@@ -107,26 +107,29 @@ Blazor Server.
    Ứng dụng tự tạo 5 Role và tài khoản `hieutruong` nếu chưa có. Không
    lưu mật khẩu thật trong `appsettings.json` hoặc commit lên Git.
 
-## Chạy demo miễn phí trên Render
+## Deploy trên Render với SQLite lưu bền vững
 
 Repo có `Dockerfile` và `render.yaml` để Render build ứng dụng .NET 8 cùng
-Python/openpyxl. Sau khi đưa repo lên GitHub:
+Python/openpyxl. Blueprint dùng gói Starter và ổ đĩa bền vững 1 GB tại
+`/var/data`; gói này có tính phí:
 
 1. Tạo Web Service trên Render, kết nối repo và chọn Blueprint (`render.yaml`).
-2. Khi Render hỏi `Admin__InitialPassword`, nhập mật khẩu mạnh riêng cho demo.
-   `Admin__ResetExistingPassword` đang bật để thay mật khẩu cũ trong DB demo
-   ngay lần khởi động đầu tiên.
-3. Sau khi deploy thành công, đổi `Admin__ResetExistingPassword` thành `false`
-   trong Environment của Render để các lần khởi động sau không ghi đè mật khẩu
-   đã đổi. Không chia sẻ secret này hoặc commit vào repo.
-4. Render cấp địa chỉ miễn phí dạng `*.onrender.com`; domain riêng chỉ dùng
-   được nếu bạn đã sở hữu domain đó.
+   Xác nhận gói Starter và ổ đĩa 1 GB nếu Render yêu cầu xác nhận thay đổi.
+2. Cấu hình `Admin__InitialPassword` và `Database__ImportToken` bằng secret
+   riêng trong Environment của Render; không lưu các giá trị này trong Git.
+   `Admin__ResetExistingPassword` mặc định `false` để không ghi đè mật khẩu
+   đã đổi khi dịch vụ khởi động lại.
+3. Nếu cần nạp snapshot SQLite, mở
+   `https://<ten-dich-vu>.onrender.com/_ops/database/import`, nhập transfer
+   token và chọn file `.db`. Endpoint kiểm tra tính toàn vẹn/schema và từ chối
+   snapshot có tài khoản trong `AspNetUsers`. Sau thông báo xác nhận, khởi động
+   lại dịch vụ để cài snapshot lên ổ đĩa bền vững.
+4. Render cấp địa chỉ dạng `*.onrender.com`; domain riêng chỉ dùng được nếu
+   bạn đã sở hữu domain đó.
 
-**Chỉ dùng làm demo:** dịch vụ Free có thể ngủ sau 15 phút không có truy cập
-(lần mở lại có thể phải chờ khoảng một phút). Hệ thống tệp là tạm thời; mọi
-thay đổi SQLite sẽ mất khi dịch vụ ngủ, khởi động lại hoặc deploy lại. Không
-dùng bản miễn phí này để lưu dữ liệu hoạt động thật hoặc dữ liệu cần giữ lâu
-dài.
+Ổ đĩa bền vững giữ SQLite qua các lần deploy/khởi động lại, nhưng không thay
+thế cho sao lưu định kỳ. Nếu chuyển dịch vụ về gói Free hoặc bỏ ổ đĩa, dữ liệu
+trên ổ có thể không còn được ứng dụng sử dụng.
 
 **Nền tảng .NET:** dự án hiện dùng .NET 8, đã hết thời hạn hỗ trợ từ
 10/11/2026. Chỉ nên dùng cấu hình này cho demo ngắn hạn; cần nâng lên phiên
